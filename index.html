@@ -764,6 +764,48 @@
     </div>
 
     <script>
+        // Typewriter effect
+        function typeWriter() {
+            const text = "cinematic storyteller";
+            const element = document.querySelector('.typewriter');
+            let i = 0;
+            
+            // Clear existing text and remove CSS animation
+            element.style.animation = 'none';
+            element.style.borderRight = '3px solid #007aff';
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 150);
+                } else {
+                    // Start blinking cursor
+                    element.style.animation = 'blink-caret 0.75s step-end infinite';
+                    
+                    // Show subtitle after typing is complete
+                    setTimeout(() => {
+                        document.querySelector('.subtitle').style.opacity = '1';
+                        document.querySelector('.subtitle').style.animation = 'fadeInUp 1s ease-out forwards';
+                    }, 500);
+                    
+                    // Show buttons after subtitle
+                    setTimeout(() => {
+                        document.querySelector('.cta-buttons').style.opacity = '1';
+                        document.querySelector('.cta-buttons').style.animation = 'fadeInUp 1s ease-out forwards';
+                    }, 1000);
+                }
+            }
+            
+            type();
+        }
+
+        // Start typewriter effect when page loads
+        window.addEventListener('load', () => {
+            setTimeout(typeWriter, 1000); // Start after 1 second
+        });
+
         // Slideshow functionality
         let slideIndex = 0;
         const slides = document.querySelectorAll('.slide');
