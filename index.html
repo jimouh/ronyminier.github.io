@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Photography & Film</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 300;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            background: #555;
+            transform: translateY(-2px);
+        }
+
+        /* Portfolio Grid */
+        .portfolio {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .portfolio-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #ddd, #eee);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .portfolio-info {
+            padding: 1.5rem;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-info p {
+            color: #666;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .portfolio-category {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #ddd, #eee);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: #666;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: 300;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .social-links a:hover {
+            background: #333;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Modal for portfolio items */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+        }
+
+        .modal img, .modal video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            opacity: 0.6;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">YOUR NAME</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>PHOTOGRAPHY & FILM</h1>
+                <p>Capturing cinematic moments in everyday life. Available for car shows, events, and creative collaborations.</p>
+                <a href="#contact" class="cta-button">WORK WITH ME</a>
+            </div>
+        </section>
+
+        <section id="portfolio" class="portfolio">
+            <div class="container">
+                <h2 class="section-title">RECENT WORK</h2>
+                <div class="portfolio-grid">
+                    <div class="portfolio-item" onclick="openModal('modal1')">
+                        <div class="portfolio-image">Video Thumbnail</div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-category">Cinematic Edit</div>
+                            <h3>Daily Life Stories</h3>
+                            <p>Capturing the beauty in everyday moments through cinematic storytelling and color grading.</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" onclick="openModal('modal2')">
+                        <div class="portfolio-image">Photo Gallery</div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-category">Photography</div>
+                            <h3>Urban Landscapes</h3>
+                            <p>Street photography and urban exploration with a focus on light and composition.</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" onclick="openModal('modal3')">
+                        <div class="portfolio-image">Event Coverage</div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-category">Event Film</div>
+                            <h3>Car Show Coverage</h3>
+                            <p>Professional event coverage with cinematic flair and attention to detail.</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" onclick="openModal('modal4')">
+                        <div class="portfolio-image">Portrait Session</div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-category">Portrait</div>
+                            <h3>Creative Portraits</h3>
+                            <p>Artistic portrait photography with natural lighting and authentic moments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-image">Your Photo Here</div>
+                    <div class="about-text">
+                        <h2>ABOUT ME</h2>
+                        <p>I'm a photographer and filmmaker passionate about capturing cinematic moments in everyday life. What started as a hobby has evolved into a pursuit of visual storytelling through both photography and video.</p>
+                        <p>I specialize in creating cinematic edits of daily life, event coverage, and artistic photography. My goal is to find beauty in ordinary moments and present them through a cinematic lens.</p>
+                        <p>Currently seeking opportunities to work with car shows, events, and creative projects. Let's create something beautiful together.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">GET IN TOUCH</h2>
+                <div class="contact-content">
+                    <form class="contact-form">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="text" placeholder="Project Type (Car Show, Event, etc.)">
+                        <textarea placeholder="Tell me about your project..." required></textarea>
+                        <button type="submit" class="cta-button">SEND MESSAGE</button>
+                    </form>
+                    <div class="contact-info">
+                        <h3>LET'S WORK TOGETHER</h3>
+                        <p>Available for:</p>
+                        <p>• Car shows and automotive events</p>
+                        <p>• Creative collaborations</p>
+                        <p>• Portrait sessions</p>
+                        <p>• Cinematic video projects</p>
+                        <p>• Event coverage</p>
+                        
+                        <div class="social-links">
+                            <a href="https://instagram.com/yourhandle" target="_blank">Instagram</a>
+                            <a href="mailto:your.email@gmail.com">Email</a>
+                            <a href="https://youtube.com/yourchannel" target="_blank">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Your Name. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modals for portfolio items -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal1')">&times;</span>
+            <video controls width="100%">
+                <source src="your-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <h3 style="color: white; margin-top: 20px;">Daily Life Stories</h3>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <img src="your-photo.jpg" alt="Urban Landscapes">
+            <h3 style="color: white; margin-top: 20px;">Urban Landscapes</h3>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal3')">&times;</span>
+            <video controls width="100%">
+                <source src="car-show-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <h3 style="color: white; margin-top: 20px;">Car Show Coverage</h3>
+        </div>
+    </div>
+
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal4')">&times;</span>
+            <img src="portrait-photo.jpg" alt="Creative Portraits">
+            <h3 style="color: white; margin-top: 20px;">Creative Portraits</h3>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Modal functionality
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
