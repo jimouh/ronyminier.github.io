@@ -1,916 +1,254 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts (add this for custom fonts) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <title>jimouh - Photography & Film</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #1d1d1f;
-            background-color: #000;
-            overflow-x: hidden;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #007aff;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section with Slideshow */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .slideshow-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .slide::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 10;
-            max-width: 800px;
-            padding: 0 2rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-            line-height: 1.1;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .cta-primary {
-            padding: 1rem 2.5rem;
-            background: #007aff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 2px solid #007aff;
-            font-size: 1.1rem;
-        }
-
-        .cta-primary:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
-        }
-
-        .cta-secondary {
-            padding: 1rem 2.5rem;
-            background: transparent;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            font-size: 1.1rem;
-        }
-
-        .cta-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px);
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.7);
-            animation: bounce 2s infinite;
-        }
-
-        /* Portfolio Section */
-        .portfolio {
-            background: #f5f5f7;
-            padding: 8rem 0;
-        }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1d1d1f;
-            letter-spacing: -1px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.3rem;
-            color: #86868b;
-            margin-bottom: 4rem;
-            font-weight: 400;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .portfolio-card {
-            background: #fff;
-            border-radius: 18px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .portfolio-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .portfolio-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .portfolio-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .portfolio-card:hover .portfolio-image::before {
-            opacity: 1;
-        }
-
-        .portfolio-info {
-            padding: 2rem;
-        }
-
-        .portfolio-category {
-            display: inline-block;
-            background: #007aff;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .portfolio-info h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: #1d1d1f;
-            letter-spacing: -0.5px;
-        }
-
-        .portfolio-info p {
-            color: #86868b;
-            font-weight: 400;
-            line-height: 1.6;
-            font-size: 1rem;
-        }
-
-        /* About Section */
-        .about {
-            background: #000;
-            color: #fff;
-            padding: 8rem 0;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        .about-image {
-            width: 100%;
-            height: 500px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .about-text h2 {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 2rem;
-            letter-spacing: -1px;
-        }
-
-        .about-text p {
-            margin-bottom: 1.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-            line-height: 1.7;
-            font-size: 1.1rem;
-        }
-
-        /* Contact Section */
-        .contact {
-            background: #f5f5f7;
-            padding: 8rem 0;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: start;
-        }
-
-        .contact-form {
-            background: #fff;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #1d1d1f;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #d2d2d7;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .contact-info h3 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: #1d1d1f;
-        }
-
-        .contact-info p {
-            margin-bottom: 1.5rem;
-            color: #86868b;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 3rem;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: #007aff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .social-links a:hover {
-            background: #0056b3;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0) translateX(-50%);
-            }
-            40% {
-                transform: translateY(-10px) translateX(-50%);
-            }
-            60% {
-                transform: translateY(-5px) translateX(-50%);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-content {
-                padding: 0 1rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-content,
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .section-container {
-                padding: 0 3%;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content {
-            position: relative;
-            margin: auto;
-            padding: 2rem;
-            width: 90%;
-            max-width: 900px;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-        }
-
-        .modal img, .modal video {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 30px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .close:hover {
-            opacity: 0.6;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">jimouh</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <div class="slideshow-container">
-                <div class="slide active" style="background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
-                <div class="slide" style="background-image: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
-                <div class="slide" style="background-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"></div>
-                <div class="slide" style="background-image: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"></div>
-                <div class="slide" style="background-image: linear-gradient(135deg, #fa709a 0%, #fee140 100%)"></div>
-            </div>
-            <div class="hero-content">
-                <h1>Cinematic Storyteller</h1>
-                <p class="subtitle">Capturing life's moments through photography and film</p>
-                <div class="cta-buttons">
-                    <a href="#portfolio" class="cta-primary">View My Work</a>
-                    <a href="#contact" class="cta-secondary">Hire Me</a>
+import React, { useState } from 'react';
+import { Mail, Instagram, Linkedin, ArrowRight } from 'lucide-react';
+
+export default function CinematographyPortfolio() {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [hoveredProject, setHoveredProject] = useState(null);
+
+  // Replace these with your actual project data
+  const projects = [
+    {
+      id: 1,
+      title: "Urban Stories",
+      year: "2024",
+      client: "Documentary Film",
+      thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: 2,
+      title: "Golden Hour",
+      year: "2024",
+      client: "Nike Commercial",
+      thumbnail: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: 3,
+      title: "Motion & Emotion",
+      year: "2023",
+      client: "Music Video",
+      thumbnail: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: 4,
+      title: "Brand Vision",
+      year: "2023",
+      client: "Apple Campaign",
+      thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: 5,
+      title: "Natural Light",
+      year: "2023",
+      client: "Short Film",
+      thumbnail: "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      id: 6,
+      title: "Night Scenes",
+      year: "2022",
+      client: "Narrative Feature",
+      thumbnail: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=400&h=300&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    }
+  ];
+
+  const images = [
+    "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=120&h=120&fit=crop",
+    "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=120&h=120&fit=crop"
+  ];
+
+  return (
+    <div className="bg-white text-black min-h-screen">
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center justify-center px-6 py-20">
+        <div className="max-w-5xl w-full">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl leading-tight font-light mb-8">
+            I'm <span className="font-semibold">Your Name</span>
+            <img 
+              src={images[0]}
+              alt=""
+              className="inline-block w-16 h-16 md:w-24 md:h-24 rounded-full object-cover mx-3 align-middle"
+            />
+            a cinematographer
+            <img 
+              src={images[1]}
+              alt=""
+              className="inline-block w-16 h-16 md:w-24 md:h-24 rounded-full object-cover mx-3 align-middle"
+            />
+            based in Los Angeles. I'm currently crafting
+            <img 
+              src={images[2]}
+              alt=""
+              className="inline-block w-16 h-16 md:w-24 md:h-24 rounded-full object-cover mx-3 align-middle"
+            />
+            visual stories.
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 font-light">
+            Available for commercial, narrative, and documentary projects.
+          </p>
+        </div>
+      </section>
+
+      {/* Work Section */}
+      <section className="px-6 py-20 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-sm uppercase tracking-widest text-gray-500 mb-12">Selected Work</h2>
+          
+          <div className="space-y-1">
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="group relative py-8 border-b border-gray-200 cursor-pointer transition-all hover:bg-gray-50"
+                onClick={() => setSelectedVideo(project)}
+                onMouseEnter={() => setHoveredProject(project.id)}
+                onMouseLeave={() => setHoveredProject(null)}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-3xl md:text-5xl font-light mb-2 group-hover:translate-x-2 transition-transform">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm md:text-base">{project.client}</p>
+                  </div>
+                  <div className="flex items-center gap-8">
+                    <span className="text-gray-400 text-sm hidden md:block">{project.year}</span>
+                    <ArrowRight className="text-gray-400 group-hover:text-black group-hover:translate-x-2 transition-all" size={24} />
+                  </div>
                 </div>
-            </div>
-            <div class="scroll-indicator">
-                <svg width="20" height="30" viewBox="0 0 20 30" fill="currentColor">
-                    <path d="M10 0C4.48 0 0 4.48 0 10v10c0 5.52 4.48 10 10 10s10-4.48 10-10V10C20 4.48 15.52 0 10 0zM10 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                </svg>
-            </div>
-        </section>
-
-        <section id="portfolio" class="portfolio fade-in">
-            <div class="section-container">
-                <h2 class="section-title">Recent Work</h2>
-                <p class="section-subtitle">A collection of my latest photography and cinematic projects</p>
-                <div class="portfolio-grid">
-                    <div class="portfolio-card" onclick="openModal('modal1')">
-                        <div class="portfolio-image">Cinematic Daily Life</div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-category">Video</div>
-                            <h3>Life in Motion</h3>
-                            <p>Transforming everyday moments into cinematic experiences with dynamic editing and color grading.</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card" onclick="openModal('modal2')">
-                        <div class="portfolio-image" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)">Street Photography</div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-category">Photography</div>
-                            <h3>Urban Stories</h3>
-                            <p>Capturing the raw beauty and emotion of city life through candid street photography.</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card" onclick="openModal('modal3')">
-                        <div class="portfolio-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)">Car Show Coverage</div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-category">Event</div>
-                            <h3>Automotive Excellence</h3>
-                            <p>Professional event coverage showcasing automotive culture with cinematic flair and attention to detail.</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card" onclick="openModal('modal4')">
-                        <div class="portfolio-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)">Portrait Work</div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-category">Portrait</div>
-                            <h3>Human Connection</h3>
-                            <p>Creating intimate portraits that capture personality and emotion through natural lighting.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="about fade-in">
-            <div class="section-container">
-                <div class="about-content">
-                    <div class="about-image">Your Photo Here</div>
-                    <div class="about-text">
-                        <h2>About Me</h2>
-                        <p>I'm jimouh, a passionate photographer and filmmaker who believes in the power of visual storytelling. What began as a hobby has evolved into a journey of capturing life's most beautiful and authentic moments.</p>
-                        <p>My work focuses on transforming everyday experiences into cinematic narratives through thoughtful composition, dynamic editing, and creative color grading. I specialize in lifestyle photography, event coverage, and creating compelling video content.</p>
-                        <p>Currently seeking opportunities to collaborate on car shows, events, and creative projects. Let's create something extraordinary together.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact fade-in">
-            <div class="section-container">
-                <h2 class="section-title">Let's Create Together</h2>
-                <p class="section-subtitle">Ready to bring your vision to life?</p>
-                <div class="contact-content">
-                    <form class="contact-form" onsubmit="handleSubmit(event)">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="project">Project Type</label>
-                            <input type="text" id="project" name="project" placeholder="Car Show, Wedding, Commercial, etc.">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
-                        </div>
-                        <button type="submit" class="cta-primary">Send Message</button>
-                    </form>
-                    <div class="contact-info">
-                        <h3>Available For</h3>
-                        <p>✦ Car shows and automotive events</p>
-                        <p>✦ Wedding and portrait photography</p>
-                        <p>✦ Commercial and brand content</p>
-                        <p>✦ Cinematic video projects</p>
-                        <p>✦ Creative collaborations</p>
-                        
-                        <div class="social-links">
-                            <a href="https://instagram.com/ronyminier" target="_blank" title="Instagram">IG</a>
-                            <a href="mailto:rony@example.com" title="Email">@</a>
-                            <a href="https://youtube.com/ronyminier" target="_blank" title="YouTube">YT</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="section-container">
-            <p>&copy; 2024 jimouh. All rights reserved.</p>
+                
+                {/* Hover Preview Image */}
+                {hoveredProject === project.id && (
+                  <div className="hidden md:block absolute right-32 top-1/2 -translate-y-1/2 pointer-events-none z-10">
+                    <img 
+                      src={project.thumbnail}
+                      alt={project.title}
+                      className="w-64 h-48 object-cover rounded-lg shadow-2xl"
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-    </footer>
+      </section>
 
-    <!-- Modals -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal1')">&times;</span>
-            <video controls width="100%">
-                <source src="life-in-motion.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <h3 style="color: white; margin-top: 20px; font-size: 1.5rem;">Life in Motion</h3>
+      {/* About Section */}
+      <section className="px-6 py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-sm uppercase tracking-widest text-gray-500 mb-12">About</h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <p className="text-2xl md:text-3xl font-light leading-relaxed mb-6">
+                I believe every frame tells a story. My approach combines technical precision with artistic vision.
+              </p>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                With experience across commercials, music videos, and narrative films, I focus on creating authentic, emotionally resonant visuals that serve the story.
+              </p>
+            </div>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-sm uppercase tracking-widest text-gray-500 mb-4">Services</h3>
+                <ul className="space-y-2 text-lg">
+                  <li>Commercial Cinematography</li>
+                  <li>Music Videos</li>
+                  <li>Documentary</li>
+                  <li>Narrative Film</li>
+                  <li>Brand Content</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-sm uppercase tracking-widest text-gray-500 mb-4">Equipment</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
+                  <li>RED Komodo 6K</li>
+                  <li>Sony FX6</li>
+                  <li>Cinema Prime Lenses</li>
+                  <li>DJI Ronin Gimbal</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="px-6 py-20 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-sm uppercase tracking-widest text-gray-500 mb-12">Get in Touch</h2>
+          <div className="space-y-6">
+            <a 
+              href="mailto:your.email@example.com"
+              className="group flex items-center gap-4 text-3xl md:text-5xl font-light hover:translate-x-2 transition-transform"
+            >
+              <Mail size={32} className="text-gray-400 group-hover:text-black transition-colors" />
+              your.email@example.com
+            </a>
+            <a 
+              href="https://instagram.com/yourhandle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 text-3xl md:text-5xl font-light hover:translate-x-2 transition-transform"
+            >
+              <Instagram size={32} className="text-gray-400 group-hover:text-black transition-colors" />
+              @yourhandle
+            </a>
+            <a 
+              href="https://linkedin.com/in/yourhandle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 text-3xl md:text-5xl font-light hover:translate-x-2 transition-transform"
+            >
+              <Linkedin size={32} className="text-gray-400 group-hover:text-black transition-colors" />
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 py-8 px-6">
+        <div className="max-w-5xl mx-auto flex justify-between items-center text-sm text-gray-500">
+          <p>© 2025 Your Name</p>
+          <p>Cinematographer</p>
+        </div>
+      </footer>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <div 
+            className="relative w-full max-w-6xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedVideo(null)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 text-xl"
+            >
+              ✕ Close
+            </button>
+            <div className="aspect-video">
+              <iframe
+                src={selectedVideo.videoUrl}
+                className="w-full h-full rounded-lg"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="mt-6 text-white">
+              <h4 className="text-3xl font-light mb-2">{selectedVideo.title}</h4>
+              <p className="text-gray-400">{selectedVideo.client} • {selectedVideo.year}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-
-    <div id="modal2" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal2')">&times;</span>
-            <img src="urban-stories.jpg" alt="Urban Stories">
-            <h3 style="color: white; margin-top: 20px; font-size: 1.5rem;">Urban Stories</h3>
-        </div>
-    </div>
-
-    <div id="modal3" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal3')">&times;</span>
-            <video controls width="100%">
-                <source src="automotive-excellence.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <h3 style="color: white; margin-top: 20px; font-size: 1.5rem;">Automotive Excellence</h3>
-        </div>
-    </div>
-
-    <div id="modal4" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal4')">&times;</span>
-            <img src="human-connection.jpg" alt="Human Connection">
-            <h3 style="color: white; margin-top: 20px; font-size: 1.5rem;">Human Connection</h3>
-        </div>
-    </div>
-
-    <script>
-        // Typewriter effect
-        function typeWriter() {
-            const text = "cinematic storyteller";
-            const element = document.querySelector('.typewriter');
-            let i = 0;
-            
-            // Clear existing text and remove CSS animation
-            element.style.animation = 'none';
-            element.style.borderRight = '3px solid #007aff';
-            element.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 150);
-                } else {
-                    // Start blinking cursor
-                    element.style.animation = 'blink-caret 0.75s step-end infinite';
-                    
-                    // Show subtitle after typing is complete
-                    setTimeout(() => {
-                        document.querySelector('.subtitle').style.opacity = '1';
-                        document.querySelector('.subtitle').style.animation = 'fadeInUp 1s ease-out forwards';
-                    }, 500);
-                    
-                    // Show buttons after subtitle
-                    setTimeout(() => {
-                        document.querySelector('.cta-buttons').style.opacity = '1';
-                        document.querySelector('.cta-buttons').style.animation = 'fadeInUp 1s ease-out forwards';
-                    }, 1000);
-                }
-            }
-            
-            type();
-        }
-
-        // Start typewriter effect when page loads
-        window.addEventListener('load', () => {
-            setTimeout(typeWriter, 1000); // Start after 1 second
-        });
-
-        // Slideshow functionality
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function nextSlide() {
-            slides[slideIndex].classList.remove('active');
-            slideIndex = (slideIndex + 1) % slides.length;
-            slides[slideIndex].classList.add('active');
-        }
-
-        // Change slide every 4 seconds
-        setInterval(nextSlide, 4000);
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Header background on scroll
-        let lastScrollY = 0;
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            const scrollY = window.scrollY;
-
-            if (scrollY > 100) {
-                header.style.background = 'rgba(0, 0, 0, 0.95)';
-            } else {
-                header.style.background = 'rgba(0, 0, 0, 0.8)';
-            }
-
-            lastScrollY = scrollY;
-        });
-
-        // Modal functionality
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // Form submission
-        function handleSubmit(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(e.target);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const project = formData.get('project');
-            const message = formData.get('message');
-            
-            // Show success message
-            alert(`Thank you ${name}! I'll get back to you soon about your ${project || 'project'}.`);
-            
-            // Reset form
-            e.target.reset();
-        }
-
-        // Parallax effect on hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            const slides = document.querySelectorAll('.slide');
-            
-            if (hero) {
-                slides.forEach(slide => {
-                    slide.style.transform = `translateY(${scrolled * 0.5}px)`;
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+  );
+}
